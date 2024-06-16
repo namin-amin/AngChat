@@ -1,10 +1,15 @@
+@if(isFailure()){
+  <app-authfailurenotification (closeNotification)="closeThis()" >
+    <p>Failed Authentication</p>
+  </app-authfailurenotification>
+}
 <div class="auth-container">
-  <form class="box">
-    <h1 class="is-size-2">Login</h1>
+  <form class="box" [formGroup]="authForm" (ngSubmit)="authenticate()" >
+    <h1 class="is-size-2">Welcome</h1>
     <br />
     <div class="field">
       <p class="control has-icons-left has-icons-right">
-        <input class="input" type="email" placeholder="Email" />
+        <input class="input" type="email" placeholder="Email" formControlName="email" />
         <span class="icon is-small is-left">
           <ng-icon [name]="'ionMail'" />
         </span>
@@ -15,14 +20,25 @@
     </div>
     <div class="field">
       <p class="control has-icons-left">
-        <input class="input" type="password" placeholder="Password" />
+        <input class="input" type="password" placeholder="Password" formControlName="password" />
         <span class="icon is-small is-left">
           <ng-icon [name]="'ionLockClosed'" />
         </span>
       </p>
     </div>
-    <button type="button" class="button is-primary is-medium" [class.is-loading]="isLoading()"
-      (click)="toggleLoading()">
+
+    @if (isRegister()){
+      <div class="field">
+        <p class="control has-icons-left">
+          <input class="input" type="password" placeholder="ConfirmPassword" formControlName="password_confirmation" />
+          <span class="icon is-small is-left">
+          <ng-icon [name]="'ionLockClosed'" />
+        </span>
+        </p>
+      </div>
+    }
+
+    <button type="submit" class="button is-primary" [class.is-loading]="isLoading()">
       {{isRegister()?'Register':'Login'}}
     </button>
     <button class="has-text-link" type="button"
