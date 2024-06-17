@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { FormsModule, NgModel } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
@@ -12,7 +12,6 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class ChatEditorComponent {
   message = signal<string>('');
-
   constructor(
     private chatService: ChatService,
     private authService: AuthService
@@ -20,6 +19,7 @@ export class ChatEditorComponent {
 
   sendMessage() {
     this.chatService.sendDM(this.message());
+    this.message.set('');
   }
 
   logout() {

@@ -1,6 +1,4 @@
-<p>{{ message() }}</p>
-
-<input type="text" name="" id="" [(ngModel)]="message" />
-<button (click)="sendMessage()">sendChat</button>
-
-<button (click)="logout()">logout</button>
+<div class="chatEditor" >
+  <textarea class="textarea is-small" rows="2"  placeholder="New Message...." [(ngModel)]="message" ></textarea>
+  <button class="button is-primary" (click)="sendMessage()" >send</button>
+</div>

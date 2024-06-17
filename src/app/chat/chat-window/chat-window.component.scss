@@ -1,5 +1,10 @@
 .chatheader {
   width: 100%;
+  height: 5rem;
+  display: flex;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .chats {
@@ -7,12 +12,22 @@
   width: 100%;
   flex-direction: column;
   overflow-y: scroll;
-  height: 70vh;
-  padding-bottom: 1rem;
+  height: 77vh;
+  padding-bottom: 0.5rem;
 }
 
 .chatcontainer {
   height: 100%;
   overflow: hidden;
-  padding: 1.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+app-chat-editor {
+  width: 90%;
+  flex: 1;
 }

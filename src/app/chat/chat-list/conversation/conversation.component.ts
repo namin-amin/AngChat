@@ -1,7 +1,9 @@
-import { Component, input } from '@angular/core';
+import { Component, effect, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { ConversationsResponse, UsersResponse } from '../../../shared/models/pb.types';
 import { ConversationExpand } from '../../services/conversations.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-conversation',
@@ -10,14 +12,20 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.scss',
 })
-export class ConversationComponent {
+export class ConversationComponent implements OnDestroy {
   conversation = input.required<ConversationsResponse<ConversationExpand>>();
   currentUserId = input.required<string>();
 
-  constructor(
-    private router: Router,
-    private activeRoute: ActivatedRoute
-  ) {}
+  isDestroyed = new Subject<void>();
+
+  constructor(private chatService: ChatService) {}
+  ngOnDestroy(): void {
+    this.isDestroyed.next();
+  }
+
+  get isActiveConversation() {
+    return this.conversation().id === this.chatService.currentConvId();
+  }
 
   get name() {
     return this.conversation().receiver === this.currentUserId()

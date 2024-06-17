@@ -17,7 +17,7 @@ export class ChatService {
   private conversationsService: ConversationsService;
   private userId: string = '';
 
-  private currentConvId: string = '';
+  public currentConvId = signal<string>('');
   public conversations = signal<ConversationsResponse<ConversationExpand>[]>([]);
 
   private cachedChats: Map<string, ChatsResponse[]> = new Map();
@@ -39,7 +39,7 @@ export class ChatService {
   }
 
   async loadCurrentChats(currentConversationId: string) {
-    this.currentConvId = currentConversationId;
+    this.currentConvId.set(currentConversationId);
     if (this.cachedChats.has(currentConversationId)) {
       this.currentChat.set(this.cachedChats.get(currentConversationId)!); //todo correct
       return;
@@ -53,12 +53,12 @@ export class ChatService {
   }
 
   async sendDM(message: string) {
-    if (this.currentConvId === '') {
+    if (this.currentConvId() === '') {
       return;
     }
     let result = await this.conversationsService.sendDirestMessage(
       message,
-      this.currentConvId,
+      this.currentConvId(),
       this.userId
     );
 
@@ -100,7 +100,7 @@ export class ChatService {
       oldChat = [];
     }
     this.cachedChats.set(conversationId!, [...oldChat, eachChat]);
-    if (this.currentConvId === conversationId) {
+    if (this.currentConvId() === conversationId) {
       this.currentChat.update((old) => [...old!, eachChat]);
     }
   }

@@ -35,6 +35,7 @@ export class ChatWindowComponent implements OnDestroy, OnInit, AfterViewChecked 
     activeRoute.params.pipe(takeUntil(this.isDestroying)).subscribe(async (params) => {
       this.currentRoute = params['id'];
       this.conversationName = params['name'];
+
       await this.runConversationChanged(this.currentRoute);
     });
     this.currentUserId = authService.currentUser()?.id!;
