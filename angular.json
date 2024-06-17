@@ -29,10 +29,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "bulma/sass/_index.scss",
-              "src/styles.scss"
-            ],
+            "styles": ["bulma/sass/_index.scss", "src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -86,10 +83,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "bulma/sass/_index.scss",
-              "src/styles.scss"
-            ],
+            "styles": ["bulma/sass/_index.scss", "src/styles.scss"],
             "scripts": []
           }
         }

@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { PbService } from '../services/pb.service';
-import { Collections, UsersResponse } from '../shared/pb.types';
+import { Injectable, signal } from '@angular/core';
+import { PbService } from '../shared/services/pb.service';
+import { Collections, UsersResponse } from '../shared/models/pb.types';
 import { BehaviorSubject } from 'rxjs';
-import { RecordAuthResponse } from 'pocketbase';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user: BehaviorSubject<UsersResponse | null>;
+  currentUser = signal<UsersResponse | null>(null);
 
   constructor(private pb: PbService) {
-    this.user = new BehaviorSubject<UsersResponse | null>(null);
-    this.user.next(this.pb.PB.authStore.model as UsersResponse);
+    //todo need to handle onchange of PB and also result
+    this.currentUser.set(this.pb.PB.authStore.model as UsersResponse | null);
+    //todo also need to handle token expiry
   }
 
   async register(email: string, password: string, confirmPassword: string) {
@@ -32,12 +32,11 @@ export class AuthService {
       password
     );
     this.pb.PB.authStore.save(response.token, response.record);
-    this.user.next(response.record);
-    return response;
+    this.currentUser.set(response.record);
   }
 
   logOut() {
     this.pb.PB.authStore.clear();
-    this.user.next(null);
+    this.currentUser.set(null);
   }
 }

@@ -1,10 +1,10 @@
-@if(isFailure()){
-  <app-authfailurenotification (closeNotification)="closeThis()" >
+@if (isFailure()) {
+  <app-authfailurenotification (closeNotification)="closeThis()">
     <p>Failed Authentication</p>
   </app-authfailurenotification>
 }
 <div class="auth-container">
-  <form class="box" [formGroup]="authForm" (ngSubmit)="authenticate()" >
+  <form class="box" [formGroup]="authForm" (ngSubmit)="authenticate()">
     <h1 class="is-size-2">Welcome</h1>
     <br />
     <div class="field">
@@ -27,22 +27,27 @@
       </p>
     </div>
 
-    @if (isRegister()){
+    @if (isRegister()) {
       <div class="field">
         <p class="control has-icons-left">
-          <input class="input" type="password" placeholder="ConfirmPassword" formControlName="password_confirmation" />
+          <input
+            class="input"
+            type="password"
+            placeholder="ConfirmPassword"
+            formControlName="password_confirmation"
+          />
           <span class="icon is-small is-left">
-          <ng-icon [name]="'ionLockClosed'" />
-        </span>
+            <ng-icon [name]="'ionLockClosed'" />
+          </span>
         </p>
       </div>
     }
 
     <button type="submit" class="button is-primary" [class.is-loading]="isLoading()">
-      {{isRegister()?'Register':'Login'}}
+      {{ isRegister() ? 'Register' : 'Login' }}
     </button>
-    <button class="has-text-link" type="button"
-      (click)="changeToRegister()">{{isRegister()?'Login':'Register'}}</button>
+    <button class="has-text-link" type="button" (click)="changeToRegister()">
+      {{ isRegister() ? 'Login' : 'Register' }}
+    </button>
   </form>
-
 </div>

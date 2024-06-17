@@ -1,3 +1,13 @@
-<p>chat works!</p>
-
-<button (click)="logOut()">Logout</button>
+<div class="fixed-grid has-4-cols has-12-rows">
+  <div class="grid">
+    <div class="cell is-row-span-12 is-col-start-1 box chatlist block">
+      <app-chat-list></app-chat-list>
+    </div>
+    <div class="cell is-col-span-3 is-row-span-11 is-row-start-1 is-col-start-2 box">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="cell is-col-span-3 is-col-start-2 box">
+      <app-chat-editor></app-chat-editor>
+    </div>
+  </div>
+</div>
