@@ -1,0 +1,3 @@
+@for (item of conversations(); track item.id) {
+  <app-conversation [conversation]="item" [currentUserId]="currentUser.id"></app-conversation>
+}

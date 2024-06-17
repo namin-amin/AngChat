@@ -10,8 +10,6 @@ import {
 } from '@angular/forms';
 import { AuthfailurenotificationComponent } from './authfailurenotification/authfailurenotification.component';
 import { AuthService } from './auth.service';
-import { UsersResponse } from '../shared/pb.types';
-import { RecordAuthResponse } from 'pocketbase';
 import { Router } from '@angular/router';
 
 @Component({
@@ -56,34 +54,38 @@ export class AuthComponent {
     let email = this.authForm.value.email ?? '';
     let password = this.authForm.value.password ?? '';
     let password_confirmation = this.authForm.value.password ?? '';
+    let succeded = false;
 
     if (this.isRegister()) {
-      this.registerUser(email, password, password_confirmation);
+      succeded = await this.registerUser(email, password, password_confirmation);
     } else {
-      this.loginUser(email, password);
+      succeded = await this.loginUser(email, password);
       console.log('logged in');
+    }
+    if (!succeded) {
+      this.isFailure.set(true);
     }
     await this.router.navigate(['/chat']);
   };
 
-  registerUser(email: string, password: string, password_confirmation: string) {
-    this.authService
-      .register(email, password, password_confirmation)
-      .then()
-      .catch(() => {
-        this.isFailure.set(true);
-        this.toggleLoading();
-      });
+  async registerUser(email: string, password: string, password_confirmation: string) {
+    try {
+      await this.authService.register(email, password, password_confirmation);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 
-  loginUser(email: string, password: string) {
-    this.authService
-      .login(email, password)
-      .then()
-      .catch(() => {
-        this.isFailure.set(true);
-        this.toggleLoading();
-      });
+  async loginUser(email: string, password: string) {
+    try {
+      await this.authService.login(email, password);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 
   customFormValidate() {
