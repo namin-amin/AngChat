@@ -1,5 +1,5 @@
-<div class="box" [routerLink]="conversation().id">
+<div class="box" [routerLink]="[conversation().id, name]">
   <p>
-    {{ email }}
+    {{ name }}
   </p>
 </div>

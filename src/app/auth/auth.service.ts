@@ -15,14 +15,15 @@ export class AuthService {
     //todo also need to handle token expiry
   }
 
-  async register(email: string, password: string, confirmPassword: string) {
+  async register(email: string, password: string, confirmPassword: string, userName: string) {
     console.log('trying to create user');
-   let response = await this.pb.PB.collection(Collections.Users).create<UsersResponse>({
-     email: email,
-     password: password,
-     passwordConfirm: confirmPassword,
-     emailVisibility: true,
-   });
+    let response = await this.pb.PB.collection(Collections.Users).create<UsersResponse>({
+      email: email,
+      password: password,
+      passwordConfirm: confirmPassword,
+      emailVisibility: true,
+      name: userName,
+    });
   }
 
   async login(email: string, password: string) {
@@ -37,6 +38,6 @@ export class AuthService {
 
   logOut() {
     this.pb.PB.authStore.clear();
-    this.currentUser.set(null);
+    this.currentUser.set(null); // todo this need to be made such that it gets back to logout page automatically
   }
 }

@@ -1,7 +1,13 @@
-<p>chat-window works!</p>
+<div class="chatcontainer">
+  <div class="box has-background-primary chatheader has-text-white-ter is-size-2">
+    <h1>{{ conversationName }}</h1>
+  </div>
 
-<h1>{{ currentRoute }}</h1>
+  <div class="chats" #chatBubbleContainer>
+    @for (item of chatsToDisplay(); track $index) {
+      <app-chat-bubble [chat]="item" [isSentByMe]="isSentByMe(item)"></app-chat-bubble>
+    }
+  </div>
 
-@for (item of chatsToDisplay(); track $index) {
-  <li>{{ item.content }}</li>
-}
+  <app-chat-editor></app-chat-editor>
+</div>

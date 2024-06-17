@@ -18,6 +18,23 @@
         </span>
       </p>
     </div>
+
+    @if (isRegister()) {
+      <div class="field">
+        <p class="control has-icons-left">
+          <input
+            class="input"
+            type="text"
+            placeholder="UserName"
+            formControlName="password_confirmation"
+          />
+          <span class="icon is-small is-left">
+            <ng-icon [name]="'ionLockClosed'" />
+          </span>
+        </p>
+      </div>
+    }
+
     <div class="field">
       <p class="control has-icons-left">
         <input class="input" type="password" placeholder="Password" formControlName="password" />

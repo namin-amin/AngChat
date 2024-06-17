@@ -4,6 +4,7 @@ import { AuthService } from '../../auth/auth.service';
 import { ConversationExpand, ConversationsService } from './conversations.service';
 import {
   ChatsRecord,
+  ChatsResponse,
   Collections,
   ConversationsRecord,
   ConversationsResponse,
@@ -19,9 +20,9 @@ export class ChatService {
   private currentConvId: string = '';
   public conversations = signal<ConversationsResponse<ConversationExpand>[]>([]);
 
-  private cachedChats: Map<string, ChatsRecord[]> = new Map();
+  private cachedChats: Map<string, ChatsResponse[]> = new Map();
 
-  public currentChat = signal<ChatsRecord[] | null>(null);
+  public currentChat = signal<ChatsResponse[] | null>(null);
 
   constructor(
     private pb: PbService,
@@ -65,15 +66,20 @@ export class ChatService {
   }
 
   private setUpSubscriptions() {
-    this.pb.PB.collection(Collections.Chats).subscribe<ChatsRecord>('*', (e) => {
+    this.pb.PB.collection(Collections.Chats).subscribe<ChatsResponse>('*', (e) => {
       this.handleChatCallBacks(e.record);
     });
-    this.pb.PB.collection(Collections.Conversations).subscribe<ConversationsResponse>('*', (e) => {
-      this.handleConversationCallBack(e.record);
-    });
+    this.pb.PB.collection(Collections.Conversations).subscribe<ConversationsResponse>(
+      '*',
+      async (e) => {
+        console.log(e);
+
+        await this.handleConversationCallBack(e.record);
+      }
+    );
   }
 
-  private handleConversationCallBack(conversation: ConversationsResponse) {
+  private async handleConversationCallBack(conversation: ConversationsResponse) {
     let related = conversation.receiver === this.userId || conversation.sender === this.userId;
     if (!related) {
       return;
@@ -82,10 +88,12 @@ export class ChatService {
       console.log('something gone wrong');
       return;
     }
+    let result = await this.conversationsService.getConversationById(conversation.id);
+    this.conversations.update((old) => [...old, result]);
     this.cachedChats.set(conversation.collectionId, []);
   }
 
-  private handleChatCallBacks(eachChat: ChatsRecord) {
+  private handleChatCallBacks(eachChat: ChatsResponse) {
     let conversationId = eachChat.chatTypeId;
     let oldChat = this.cachedChats.get(conversationId!);
     if (oldChat === undefined) {

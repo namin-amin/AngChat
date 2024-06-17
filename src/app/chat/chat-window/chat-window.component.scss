@@ -1,0 +1,18 @@
+.chatheader {
+  width: 100%;
+}
+
+.chats {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 70vh;
+  padding-bottom: 1rem;
+}
+
+.chatcontainer {
+  height: 100%;
+  overflow: hidden;
+  padding: 1.5rem;
+}

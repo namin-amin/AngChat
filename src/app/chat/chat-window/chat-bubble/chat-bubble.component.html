@@ -1,0 +1,9 @@
+<div
+  class="bubbleContainer has-text-white-bis"
+  [class.has-background-dark]="!isSentByMe()"
+  [class.has-background-link]="isSentByMe()"
+  [class.myMsg]="isSentByMe()"
+>
+  <p class="is-size-7">{{ chat().created | date: 'short' }}</p>
+  <h2 class="is-size-5">{{ chat().content }}</h2>
+</div>

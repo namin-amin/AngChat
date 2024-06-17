@@ -1,6 +1,7 @@
 import { PbService } from '../../shared/services/pb.service';
 import {
   ChatsRecord,
+  ChatsResponse,
   Collections,
   ConversationsResponse,
   UsersResponse,
@@ -27,14 +28,22 @@ export class ConversationsService {
     });
   }
 
+  getConversationById(conversationId: string) {
+    return this.pb.PB.collection(Collections.Conversations).getOne<
+      ConversationsResponse<ConversationExpand>
+    >(conversationId, {
+      expand: 'rreceiver,sender',
+    });
+  }
+
   getChatsWithConversationId(conversationId: string) {
-    return this.pb.PB.collection(Collections.Chats).getList<ChatsRecord>(1, 50, {
+    return this.pb.PB.collection(Collections.Chats).getList<ChatsResponse>(1, 50, {
       filter: `chatTypeId = "${conversationId}"`,
     });
   }
 
   sendDirestMessage(message: string, conversation: string, creator: string) {
-    return this.pb.PB.collection(Collections.Chats).create<ChatsRecord>({
+    return this.pb.PB.collection(Collections.Chats).create<ChatsResponse>({
       creator: creator,
       content: message,
       chatTypeId: conversation,

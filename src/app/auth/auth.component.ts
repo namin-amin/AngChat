@@ -32,6 +32,7 @@ export class AuthComponent {
 
   authForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
+    userName: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
     password_confirmation: new FormControl('', [Validators.required]),
   });
@@ -46,18 +47,19 @@ export class AuthComponent {
 
   authenticate = async () => {
     this.toggleLoading();
-    if (!this.customFormValidate()) {
+    if (!this.validateAuth()) {
       this.isFailure.set(true);
       return;
     }
 
     let email = this.authForm.value.email ?? '';
     let password = this.authForm.value.password ?? '';
+    let userName = this.authForm.value.userName ?? '';
     let password_confirmation = this.authForm.value.password ?? '';
     let succeded = false;
 
     if (this.isRegister()) {
-      succeded = await this.registerUser(email, password, password_confirmation);
+      succeded = await this.registerUser(email, password, password_confirmation, userName);
       if (succeded) {
         this.isLoading.set(false);
         this.isRegister.set(false);
@@ -72,9 +74,14 @@ export class AuthComponent {
     await this.router.navigate(['/chat']);
   };
 
-  async registerUser(email: string, password: string, password_confirmation: string) {
+  async registerUser(
+    email: string,
+    password: string,
+    password_confirmation: string,
+    userName: string
+  ) {
     try {
-      await this.authService.register(email, password, password_confirmation);
+      await this.authService.register(email, password, password_confirmation, userName);
       return true;
     } catch (error) {
       console.log(error);
@@ -92,7 +99,7 @@ export class AuthComponent {
     }
   }
 
-  customFormValidate() {
+  validateAuth() {
     let valid: undefined | boolean = false;
     if (this.isRegister()) {
       valid = this.authForm.valid;

@@ -19,9 +19,9 @@ export class ConversationComponent {
     private activeRoute: ActivatedRoute
   ) {}
 
-  get email() {
+  get name() {
     return this.conversation().receiver === this.currentUserId()
-      ? this.conversation().expand?.sender.email
-      : this.conversation().expand?.receiver.email;
+      ? this.conversation().expand?.sender.name
+      : this.conversation().expand?.receiver.name;
   }
 }

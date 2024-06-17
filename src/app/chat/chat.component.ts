@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { take } from 'rxjs';
 import { ChatListComponent } from './chat-list/chat-list.component';
 import { ChatEditorComponent } from './chat-editor/chat-editor.component';
 
