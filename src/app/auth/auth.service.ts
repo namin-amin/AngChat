@@ -17,12 +17,12 @@ export class AuthService {
 
   async register(email: string, password: string, confirmPassword: string) {
     console.log('trying to create user');
-    return await this.pb.PB.collection(Collections.Users).create<UsersResponse>({
-      email: email,
-      password: password,
-      passwordConfirm: confirmPassword,
-      emailVisibility: true,
-    });
+   let response = await this.pb.PB.collection(Collections.Users).create<UsersResponse>({
+     email: email,
+     password: password,
+     passwordConfirm: confirmPassword,
+     emailVisibility: true,
+   });
   }
 
   async login(email: string, password: string) {

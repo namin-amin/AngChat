@@ -58,6 +58,10 @@ export class AuthComponent {
 
     if (this.isRegister()) {
       succeded = await this.registerUser(email, password, password_confirmation);
+      if (succeded) {
+        this.isLoading.set(false);
+        this.isRegister.set(false);
+      }
     } else {
       succeded = await this.loginUser(email, password);
       console.log('logged in');

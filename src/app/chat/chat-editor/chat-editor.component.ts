@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { FormsModule, NgModel } from '@angular/forms';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-chat-editor',
@@ -12,9 +13,16 @@ import { FormsModule, NgModel } from '@angular/forms';
 export class ChatEditorComponent {
   message = signal<string>('');
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    private authService: AuthService
+  ) {}
 
   sendMessage() {
     this.chatService.sendDM(this.message());
+  }
+
+  logout() {
+    this.authService.logOut();
   }
 }
