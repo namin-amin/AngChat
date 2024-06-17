@@ -7,7 +7,7 @@ import PocketBase from 'pocketbase';
 export class PbService {
   pb: PocketBase;
   constructor() {
-    this.pb = new PocketBase('http://127.0.0.1:8090');
+    this.pb = new PocketBase('http://127.0.0.1:8090'); //Todo need to make this from env variables
   }
 
   get PB() {
